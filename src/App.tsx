@@ -10,15 +10,16 @@ function App() {
 
   return (
     <div className="App">
+      <h4>React Concurrent Mode Demo</h4>
       <input
-        placeholder="search"
+        placeholder="search (blocking)"
         onChange={(e) => {
           const text = e.target.value;
           setFilter(text);
         }}
       />
       <input
-        placeholder="time sliced search"
+        placeholder="time sliced search (concurrent)"
         onChange={(e) => {
           const text = e.target.value;
           requestAnimationFrame(() => setFilter(text));
@@ -28,7 +29,7 @@ function App() {
         {citiesToShow
           .filter(({ name, country, subcountry }) =>
             [name, country, subcountry].some(
-              (field) => field && field.includes(keyword)
+              (field) => field && field.toLocaleLowerCase().includes(keyword)
             )
           )
           .map((city) => (

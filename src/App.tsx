@@ -1,16 +1,12 @@
 import React, { useState } from "react";
 import "./App.css";
 
-import { City } from "./api/types";
-// import { getAllCities } from "./api";
+import allCities from "./api/data/allCities.json";
 
-import cities from "./api/data/allCities.json";
-
-const citiesToShow = cities.slice(0, 3000);
+const citiesToShow = allCities.slice(0, 5000);
 
 function App() {
-  //  const [keyword, setKeyword] = useState<string>("");
-  const [filter, setFilter] = useState<string>("");
+  const [keyword, setFilter] = useState<string>("");
 
   return (
     <div className="App">
@@ -18,12 +14,23 @@ function App() {
         placeholder="search"
         onChange={(e) => {
           const text = e.target.value;
+          setFilter(text);
+        }}
+      />
+      <input
+        placeholder="time sliced search"
+        onChange={(e) => {
+          const text = e.target.value;
           requestAnimationFrame(() => setFilter(text));
         }}
       />
       <ul>
         {citiesToShow
-          .filter((c) => c.name.includes(filter) || c.country.includes(filter))
+          .filter(({ name, country, subcountry }) =>
+            [name, country, subcountry].some(
+              (field) => field && field.includes(keyword)
+            )
+          )
           .map((city) => (
             <li key={city.geonameid}>
               {[city.name, city.subcountry, city.country].join(", ")}

@@ -3,7 +3,7 @@ import "./App.css";
 
 import allCities from "./api/data/allCities.json";
 
-const citiesToShow = allCities.slice(0, 5000);
+const citiesToShow = allCities.slice(0, 6000);
 
 function App() {
   const [keyword, setFilter] = useState<string>("");

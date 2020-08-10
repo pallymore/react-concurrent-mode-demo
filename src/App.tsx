@@ -1,24 +1,35 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import "./App.css";
+
+import { City } from "./api/types";
+// import { getAllCities } from "./api";
+
+import cities from "./api/data/allCities.json";
+
+const citiesToShow = cities.slice(0, 3000);
 
 function App() {
+  //  const [keyword, setKeyword] = useState<string>("");
+  const [filter, setFilter] = useState<string>("");
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <input
+        placeholder="search"
+        onChange={(e) => {
+          const text = e.target.value;
+          requestAnimationFrame(() => setFilter(text));
+        }}
+      />
+      <ul>
+        {citiesToShow
+          .filter((c) => c.name.includes(filter) || c.country.includes(filter))
+          .map((city) => (
+            <li key={city.geonameid}>
+              {[city.name, city.subcountry, city.country].join(", ")}
+            </li>
+          ))}
+      </ul>
     </div>
   );
 }
